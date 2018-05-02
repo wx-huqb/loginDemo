@@ -1,6 +1,8 @@
 package com.huqb.logindemo.controller;
 
 import com.huqb.logindemo.model.Person;
+import com.huqb.logindemo.result.ResultBack;
+import com.huqb.logindemo.result.ResultImpl;
 import com.huqb.logindemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,14 @@ public class UserController {
 
     @RequestMapping("login/{id}")
     @ResponseBody
-    public String getUserById(@PathVariable int id){
+    public ResultBack getUserById(@PathVariable int id){
 
         Person person = userService.selectPersonById(id);
+        if(null == person){
+            return ResultImpl.error("400001","没有这个人",null);
+        }else{
+            return ResultImpl.success("200001","找到对应信息",person);
+        }
 
-        return person.toString();
     }
 }
